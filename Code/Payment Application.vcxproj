@@ -127,19 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\app.c" />
     <ClCompile Include="Card\card1.c" />
     <ClCompile Include="Payment Application.c" />
     <ClCompile Include="Server\server.c" />
     <ClCompile Include="Terminal\terminal.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Application\app.c" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Application\app.h" />
     <ClInclude Include="Card\card.h" />
     <ClInclude Include="Server\server.h" />
     <ClInclude Include="Terminal\terminal.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\info\payment-flowchart.jpeg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

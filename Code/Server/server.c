@@ -2,9 +2,9 @@
 
 
 #include "server.h"
-#include<string.h>
+#include <string.h>
 // the accounts database, (balance as a float and pan as a string) per account
-ST_accountsDB_t accountsDataBase[255] = { {100,"3586766767876"},{500.0,"7189436959119763"} };
+ST_accountsDB_t accountsDataBase[255] = { {100,"3586766767876"},{500.0,"7189436959119763"},{2500,"4263982640269299"} };
 // save transactions details and date
 ST_transaction_t transDataBase[255] = { 0 };
 
@@ -26,6 +26,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 	else returns APPROVED.
 	It will update the database with the new balance.
 	*/
+	//printf("name =  %s\n",transData->cardHolderData.cardHolderName);
 	EN_transState_t Error = APPROVED;
 	if(isValidAccount(&transData->cardHolderData) == DECLINED_STOLEN_CARD)
 	{
@@ -88,9 +89,9 @@ EN_serverError_t saveTransaction(ST_transaction_t* transData)
 	else
 	{
 		transData->transactionSequenceNumber = transaSequenceNum;
-
+		//printf("name =  %s\n",transData->cardHolderData.cardHolderName);
 		memcpy(&transDataBase[Transaction_Database_Index], transData, sizeof(ST_transaction_t));
-		printf("name =  %s\n", transDataBase[Transaction_Database_Index].cardHolderData.cardHolderName);
+		//printf("name =  %s\n", transDataBase[Transaction_Database_Index].cardHolderData.cardHolderName);
 		transaSequenceNum++;
 		Transaction_Database_Index++;
 	}

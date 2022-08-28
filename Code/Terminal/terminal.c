@@ -9,16 +9,18 @@
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t* termData) // today's date from windows
 {
-	 EN_terminalError_t terminalState = OK_TERMINAL;
+	EN_terminalError_t terminalState = OK_TERMINAL;
     time_t t;
     struct tm tmp;
     char MY_TIME[11];
-    time(&t); //read number of seconds since January 1, 1970.
+    time(&t); //read number of seconds since January 1, 1970
+	
 
     localtime_s(&tmp,&t);//convert sconds to days,months and years. 
 
     // using strftime to display time in required format.
-    strftime(MY_TIME, sizeof(MY_TIME), "%d/%m/%Y", &tmp);
+    strftime(MY_TIME, sizeof(MY_TIME), "%d/%m/%Y", &tmp );
+
 
     strcpy_s(termData->transactionDate, 11, MY_TIME);
     return terminalState;
@@ -32,13 +34,13 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 
 	// convert months date of card expiration and months of current date from ascii to integer
 	// then calculate the difference between card month and current month  
-	month_compare = ((cardData.cardExpirationDate[0]-'0' * 10) + cardData.cardExpirationDate[1]-'0') -
-					((termData.transactionDate[3]-'0' * 10) + termData.transactionDate[4]-'0');
+	month_compare = (((cardData.cardExpirationDate[0]-'0') * 10) + cardData.cardExpirationDate[1]-'0') -
+					(((termData.transactionDate[3]-'0') * 10) + termData.transactionDate[4]-'0');
 	
 	// convert years date of card expiration and year of current date from ascii to integer
 	// then calculate the difference card yrear and current year 
-	year_compare = ((cardData.cardExpirationDate[3] - '0' * 10) + cardData.cardExpirationDate[4] - '0') -
-					((termData.transactionDate[8] - '0' * 10) + termData.transactionDate[9] - '0');
+	year_compare = (((cardData.cardExpirationDate[3] - '0') * 10) + cardData.cardExpirationDate[4] - '0') -
+					(((termData.transactionDate[8] - '0') * 10) + termData.transactionDate[9] - '0');
 
 	// if the difference < 0 that means the card is expired
 	if (year_compare < 0 || month_compare < 0) {
@@ -51,7 +53,7 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData)  // checking if the pan number format is correct
 {
 	EN_terminalError_t Error = OK_TERMINAL;
-	uint8_t cardPanLen = strlen(cardData->primaryAccountNumber);
+	uint8_t cardPanLen = (uint8_t)strlen(cardData->primaryAccountNumber);
 	uint32_t sum = 0;
 	uint8_t digit = 0;
 	uint8_t checkSum = cardData->primaryAccountNumber[cardPanLen - 1] - '0'; // converting from ascii to integer
@@ -82,7 +84,7 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t* termData)
 {
 	EN_cardError_t Error = OK_TERMINAL;
 	float transAmount;
-	printf("please enter Transaction Amount:");
+	printf("please enter Transaction Amount [max:%.2f $]:",termData->maxTransAmount);
 	scanf_s("%f", &transAmount);
 	  scanf_s("%*[^\n]"); scanf_s("%*c");//clear upto newline
 	if (transAmount > 0) {
@@ -112,7 +114,7 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t* termData)  // set the maximum
     printf("Enter Max transaction amount allowed: ");
     scanf_s("%f", &transAmount);
     scanf_s("%*[^\n]"); scanf_s("%*c");//clear upto newline
-    if (transAmount <= 0)
+    if (transAmount <= 0.0)
     {
         Error = INVALID_MAX_AMOUNT;
     }

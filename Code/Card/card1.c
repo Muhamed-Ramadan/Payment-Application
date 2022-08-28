@@ -57,10 +57,11 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData) { // gets the card exp
 	else {
 		while (getchar() != '\n');              // clearing stdin buffer (rest of entered data that was not read)
 	}
-	// checking that the format is correct (xx/xx) and # of chs is 5                        
-	// (00/00) is not accepted , (0x/0x) is accepted
+	// checking the format is correct (xx/xx) and # of chs is 5                        
+	// (00/00) is not accepted , (0x/0x) is accepted 
 	// checking that all entered chs are numbers
-	if ( (temp_length != 5)||(temp[2]!='/') ) {   
+	if ( (temp_length != 5)||(temp[2]!='/') ) {
+	
 		
 		Error = WRONG_EXP_DATE;
 	}
@@ -80,7 +81,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData) { // gets the card exp
 		Error = WRONG_EXP_DATE;
 	}
 	
-	else {
+	if(Error == OK_CARD) {
 		strcpy_s(cardData->cardExpirationDate, 6, temp);
 	}
 	return Error;
@@ -108,8 +109,7 @@ EN_cardError_t getCardPAN(ST_cardData_t* cardData) {      //gets the Card Pan (n
 	if (temp_length < 16 || temp_length > 19) {
 		Error = WRONG_PAN;
 	}
-	else if(Error == OK_CARD)
-	{
+	else {
 		for(uint8_t i = 0;i < temp_length;i++)
 		{
 			if(temp[i] < '0' || temp[i]>'9')
@@ -118,10 +118,8 @@ EN_cardError_t getCardPAN(ST_cardData_t* cardData) {      //gets the Card Pan (n
 				break;
 			}
 		}
-	}
-	else {
 		
-		strcpy_s(cardData->cardHolderName, 20, temp);
+		if(Error==OK_CARD)strcpy_s(cardData->primaryAccountNumber, 20, temp);
 	}
 	return Error;
 

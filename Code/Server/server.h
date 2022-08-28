@@ -27,7 +27,6 @@ typedef struct ST_transaction_t
 }ST_transaction_t;
 
 
-
 typedef struct ST_accountsDB_t             
 {
 	float balance;

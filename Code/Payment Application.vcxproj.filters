@@ -27,15 +27,12 @@
     <ClCompile Include="Card\card1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Application\app.c" />
+    <ClCompile Include="Application\app.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card\card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Server\server.h">
@@ -44,5 +41,13 @@
     <ClInclude Include="Terminal\terminal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Application\app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\info\payment-flowchart.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
