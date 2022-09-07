@@ -10,7 +10,7 @@ EN_cardError_t APP_CARD(ST_cardData_t* cardData_P)
 
 	card_status = getCardHolderName(cardData_P);
 	if (card_status == WRONG_NAME) {
-		printf("Wrong Name, Name must be between 20:24 characters \n");
+		printf("Wrong Name, Name must be between 20:24 characters and a-z A-Z ' ' '-' \n");
 		return card_status;
 	}
 	printf("================================================= \n");

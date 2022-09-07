@@ -10,7 +10,9 @@ int main()
 	printf("------------------\n");
 	ST_transaction_t transData;
 	//transData.cardHolderData == {"", "", "4263982640269299"};
-	while (setMaxAmount(&transData.terminalData) == INVALID_MAX_AMOUNT);
+	while (setMaxAmount(&transData.terminalData) == INVALID_MAX_AMOUNT); // get the max transaction amount 
+	//(it loops untill correct value) it is done only one time
+
 	do {
 		do {
 			while (APP_CARD(&transData.cardHolderData) != OK_CARD);

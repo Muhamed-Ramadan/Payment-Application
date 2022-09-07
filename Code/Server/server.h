@@ -20,10 +20,10 @@ typedef enum EN_serverError_t
 }EN_serverError_t;
 typedef struct ST_transaction_t
 {
-	ST_cardData_t cardHolderData;
-	ST_terminalData_t terminalData;
-	EN_transState_t transState;
-	uint32_t transactionSequenceNumber;
+	ST_cardData_t cardHolderData;       // the name of the card holder
+	ST_terminalData_t terminalData;		//
+	EN_transState_t transState;			//
+	uint32_t transactionSequenceNumber; // the transaction index in transDataBase[255]
 }ST_transaction_t;
 
 

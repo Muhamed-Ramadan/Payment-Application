@@ -1,16 +1,43 @@
-
-
-
 #include "server.h"
 #include <string.h>
 // the accounts database, (balance as a float and pan as a string) per account
-ST_accountsDB_t accountsDataBase[255] = { {100,"3586766767876"},{500.0,"7189436959119763"},{2500,"4263982640269299"} };
+ST_accountsDB_t accountsDataBase[255] = { {100.0,"4263982640269299"}, {1000.0,"1806356467113247787"},{500.0,"7189436959119763"},{2500,"4263982640269299"}};
 // save transactions details and date
 ST_transaction_t transDataBase[255] = { 0 };
 
 
-static uint8_t Account_Database_Index = 0;
-static uint8_t Transaction_Database_Index = 0;
+static uint8_t Account_Database_Index = 0;     //current user index in accountsDataBase[255]
+static uint8_t Transaction_Database_Index = 0; //the index of the next available place in transDataBase[255]
+
+
+
+EN_serverError_t isValidAccount(ST_cardData_t* cardData)
+{
+	EN_serverError_t Error = DECLINED_STOLEN_CARD;
+	for (uint8_t i = 0; i < 255; i++)
+	{
+		if (strcmp(&cardData->primaryAccountNumber, &accountsDataBase[i].primaryAccountNumber) == 0)
+		{
+			Error = OK_SERVER;
+			Account_Database_Index = i;
+			break;
+		}
+	}
+	return Error;
+}
+
+
+
+EN_serverError_t isAmountAvailable(ST_terminalData_t* termData)
+{
+	EN_serverError_t Error = LOW_BALANCE;
+	if (termData->transAmount <= accountsDataBase[Account_Database_Index].balance)
+	{
+		Error = OK_SERVER;
+	}
+	return Error;
+}
+
 
 
 
@@ -50,31 +77,8 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 
 
 
-EN_serverError_t isValidAccount(ST_cardData_t* cardData)
-{
-	EN_serverError_t Error = DECLINED_STOLEN_CARD;
-	for (uint8_t i = 0; i < 255; i++)
-	{
-		if (strcmp(&cardData->primaryAccountNumber, &accountsDataBase[i].primaryAccountNumber) == 0)
-		{
-			Error = OK_SERVER;
-			Account_Database_Index = i;
-			break;
-		}
-	}
-	return Error;
-}
 
 
-EN_serverError_t isAmountAvailable(ST_terminalData_t* termData)
-{
-	EN_serverError_t Error = LOW_BALANCE;
-	if (termData->transAmount <= accountsDataBase[Account_Database_Index].balance)
-	{
-		Error = OK_SERVER;
-	}
-	return Error;
-}
 
 
 
@@ -92,6 +96,7 @@ EN_serverError_t saveTransaction(ST_transaction_t* transData)
 		//printf("name =  %s\n",transData->cardHolderData.cardHolderName);
 		memcpy(&transDataBase[Transaction_Database_Index], transData, sizeof(ST_transaction_t));
 		//printf("name =  %s\n", transDataBase[Transaction_Database_Index].cardHolderData.cardHolderName);
+		// print details
 		transaSequenceNum++;
 		Transaction_Database_Index++;
 	}

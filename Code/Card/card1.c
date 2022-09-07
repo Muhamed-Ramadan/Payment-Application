@@ -4,13 +4,12 @@
 #include "card.h"
 
 
-
 EN_cardError_t getCardHolderName(ST_cardData_t* cardData) {         //  gets the Card Holder Name
 	EN_cardError_t Error = OK_CARD;
 	uint8_t temp[30];              // to hold the name entered by the user
 	uint8_t temp_length;           // the len of the name entered by the user
 	printf("please enter your name(min:20 -max:24):");
-	fgets(temp, 29, stdin);
+	fgets(temp, 29, stdin);       // 29 to detect if the user enter more than 24
 	temp_length = strlen(temp);
 	if(temp[temp_length - 1]=='\n'){  // checking that the whole buffer is stored in temp[]
 		temp[temp_length - 1] = '\0';
@@ -22,11 +21,11 @@ EN_cardError_t getCardHolderName(ST_cardData_t* cardData) {         //  gets the
 	}
 	
 	
-	for(uint8_t i = 0;i < temp_length;i++)        // checking A-Z a-z ,' ' and '-'
+	for(uint8_t i = 0;i < temp_length;i++)        // checking A-Z , a-z , ' ' and '-'
 		{
-			if( !(temp[i] >= 'a' && temp[i]<='z')&& !(temp[i] >= 'A' && temp[i]<='Z') && !(temp[i]!=' ') && !(temp[i]!='-') )
+			if( !( (temp[i] >= 'a' && temp[i]<='z') || (temp[i] >= 'A' && temp[i]<='Z') || (temp[i]==' ') || (temp[i]=='-') ) )
 			{
-				Error = WRONG_PAN;
+				Error = WRONG_NAME;
 				break;
 			}
 		}
@@ -65,9 +64,13 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData) { // gets the card exp
 		
 		Error = WRONG_EXP_DATE;
 	}
+	else if (temp[0] != '0' && temp[0] != '1') // month 0-12 so first number is 0 if month<10, 1 if month>9
+	{
+		Error = WRONG_EXP_DATE;
+	}
 	else if(temp[0] == '0')
 	{
-		if(!(temp[1] > '0' && temp[1] <='9' ))
+		if(!(temp[1] > '0' && temp[1] <='9' )) 
 		Error = WRONG_EXP_DATE;
 	}
 	else if(temp[0] == '1')
@@ -76,7 +79,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t* cardData) { // gets the card exp
 		Error = WRONG_EXP_DATE;
 	}
 	
-	else if((temp[3]>='0'&&temp[3]<='9') && (temp[4]>='0'&&temp[4]<='9'))
+	else if((temp[3]>='0'&&temp[3]<='9') && (temp[4]>='0'&&temp[4]<='9')) 
 	{
 		Error = WRONG_EXP_DATE;
 	}

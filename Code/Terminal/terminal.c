@@ -12,14 +12,15 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t* termData) // today's da
 	EN_terminalError_t terminalState = OK_TERMINAL;
     time_t t;
     struct tm tmp;
-    char MY_TIME[11];
-    time(&t); //read number of seconds since January 1, 1970
+    char MY_TIME[11]; // to hold the date dd/mm/yyyy
+    time(&t); //read number of ((seconds)) since January 1, 1970
 	
 
     localtime_s(&tmp,&t);//convert sconds to days,months and years. 
 
     // using strftime to display time in required format.
     strftime(MY_TIME, sizeof(MY_TIME), "%d/%m/%Y", &tmp );
+	printf("current time is %s \n",MY_TIME); 
 
 
     strcpy_s(termData->transactionDate, 11, MY_TIME);
@@ -42,10 +43,12 @@ EN_terminalError_t isCardExpired(ST_cardData_t cardData, ST_terminalData_t termD
 	year_compare = (((cardData.cardExpirationDate[3] - '0') * 10) + cardData.cardExpirationDate[4] - '0') -
 					(((termData.transactionDate[8] - '0') * 10) + termData.transactionDate[9] - '0');
 
-	// if the difference < 0 that means the card is expired
-	if (year_compare < 0 || month_compare < 0) {
+	// if the difference of years is < 0 or if they have the same year but the difference of monthes < 0 that means the card is expired
+	if (year_compare < 0 || (month_compare < 0 && year_compare == 0)) 
+	{
 		Error = EXPIRED_CARD;
-	}else{}
+	}
+	else {}
 
 	return Error;
 }
@@ -57,14 +60,16 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData)  // checking if the p
 	uint32_t sum = 0;
 	uint8_t digit = 0;
 	uint8_t checkSum = cardData->primaryAccountNumber[cardPanLen - 1] - '0'; // converting from ascii to integer
+	//426398264026929 9
+	//823398468046929 = 81  90-81= 9
 	for(int8_t i = cardPanLen-2; i >=0; i--)
 	{
 		//printf("i = %d,(cardPanLen-2)-i = %d\n",i,(cardPanLen-2)-i);
-		if(((cardPanLen-2)-i)%2==0)
+		if(((cardPanLen-2)-i)%2==0) // if the index is even
 		{
 			//printf("%c\n", cardData->primaryAccountNumber[i]);
 			digit = (cardData->primaryAccountNumber[i] - '0') * 2;
-			digit = digit % 10 + digit / 10;
+			digit = digit % 10 + digit / 10; // if > 9 : ex: 18 --> 18/10 + 18%10= 1+8=9
 			sum += digit;
 		}
 		else 
@@ -73,7 +78,12 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t* cardData)  // checking if the p
 		}
 		  
 		
-	}
+	} 
+	//426398264026929 9
+	//823398468046929 = 81  90-81= 9
+	//81%10 = 1 - 10 = 9
+	if (checkSum == 0) checkSum = 10; // because in lower code if checkSum=0 
+	//                     then it would be 10-0=10 and would cause error , it should be 0-0 or 10-10
 	if ( (10 - (sum%10)) != checkSum )
 	{
 		Error = INVALID_CARD;
