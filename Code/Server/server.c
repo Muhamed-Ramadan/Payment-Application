@@ -41,6 +41,30 @@ EN_serverError_t isAmountAvailable(ST_terminalData_t* termData)
 
 
 
+
+EN_serverError_t saveTransaction(ST_transaction_t* transData)
+{
+	EN_serverError_t Error = OK_SERVER;
+	
+	if (Transaction_Database_Index == 255) // Transaction_Database_Index
+	{
+		Error = INTERNAL_SERVER_ERROR;
+	}
+	else
+	{
+		transData->transactionSequenceNumber = Transaction_Database_Index;
+		//printf("name =  %s\n",transData->cardHolderData.cardHolderName);
+		memcpy(&transDataBase[Transaction_Database_Index], transData, sizeof(ST_transaction_t));
+		//printf("name =  %s\n", transDataBase[Transaction_Database_Index].cardHolderData.cardHolderName);
+		Transaction_Database_Index++;
+	}
+	return Error;
+}
+
+
+
+
+
 /*LAst point*/
 EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 {
@@ -70,7 +94,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 	}
 	if(Error == APPROVED)
 	{
-		accountsDataBase[Account_Database_Index - 1].balance -= transData->terminalData.transAmount;
+		accountsDataBase[Account_Database_Index].balance -= transData->terminalData.transAmount;
 	}
 	return Error;
 }
@@ -82,38 +106,19 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 
 
 
-EN_serverError_t saveTransaction(ST_transaction_t* transData)
-{
-	EN_serverError_t Error = OK_SERVER;
-	static uint8_t transaSequenceNum = 1;
-	if (Transaction_Database_Index == 254)
-	{
-		Error = INTERNAL_SERVER_ERROR;
-	}
-	else
-	{
-		transData->transactionSequenceNumber = transaSequenceNum;
-		//printf("name =  %s\n",transData->cardHolderData.cardHolderName);
-		memcpy(&transDataBase[Transaction_Database_Index], transData, sizeof(ST_transaction_t));
-		//printf("name =  %s\n", transDataBase[Transaction_Database_Index].cardHolderData.cardHolderName);
-		// print details
-		transaSequenceNum++;
-		Transaction_Database_Index++;
-	}
-	return Error;
-}
+
 
 
 EN_serverError_t getTransaction(uint32_t transactionSequenceNumber, ST_transaction_t* transData)
 {
 	EN_serverError_t Error = OK_SERVER;
-	if (transactionSequenceNumber - 1 > Transaction_Database_Index)
+	if (transactionSequenceNumber > Transaction_Database_Index || transactionSequenceNumber==255)
 	{
 		Error = TRANSACTION_NOT_FOUND;
 	}
 	else
 	{
-		memcpy(transData, &transDataBase[transactionSequenceNumber - 1], sizeof(ST_transaction_t));
+		memcpy(transData, &transDataBase[transactionSequenceNumber ], sizeof(ST_transaction_t));
 	}
 	return Error;
 }

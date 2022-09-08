@@ -6,7 +6,7 @@
 #include "../Server/server.h"
 #include <stdio.h>
 
-void APP_START();
+
 EN_cardError_t APP_CARD(ST_cardData_t* cardData_P);
 EN_terminalError_t APP_TERMINAL(ST_cardData_t* cardData_P, ST_terminalData_t* termData_P);
 EN_serverError_t APP_SERVER(ST_transaction_t* transData_P);
