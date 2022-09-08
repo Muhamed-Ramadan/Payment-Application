@@ -12,14 +12,16 @@ int main()
 	//transData.cardHolderData == {"", "", "4263982640269299"};
 	while (setMaxAmount(&transData.terminalData) == INVALID_MAX_AMOUNT); // set the max transaction amount 
 	//(it loops untill correct value) it is done only one time
-
+	system("cls"); // clear
 	do {
+		
 		do {
 			while (APP_CARD(&transData.cardHolderData) != OK_CARD);
 
-			system("cls"); // clear
+			
 
 		} while (APP_TERMINAL(&transData.cardHolderData, &transData.terminalData) != OK_TERMINAL);
+	
 	} while (APP_SERVER(&transData) != OK_SERVER);
 
 	return 0;

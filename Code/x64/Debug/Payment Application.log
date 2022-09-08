@@ -1,5 +1,1 @@
-﻿  app.c
-  Payment Application.c
-D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Code\Payment Application.c(20,4): warning C4013: 'system' undefined; assuming extern returning int
-  Generating Code...
-  Payment Application.vcxproj -> D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Code\x64\Debug\Payment Application.exe
+﻿  Payment Application.vcxproj -> D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Code\x64\Debug\Payment Application.exe

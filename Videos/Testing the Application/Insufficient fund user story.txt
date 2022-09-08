@@ -1,0 +1,6 @@
+name: 			Mohamed Ramadan ibrahim
+expiry date:	02/26
+PAN:			1806356467113247787
+balance:		1000
+max amount:		2000 
+Amount:			1200

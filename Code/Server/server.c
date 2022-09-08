@@ -1,7 +1,7 @@
 #include "server.h"
 #include <string.h>
 // the accounts database, (balance as a float and pan as a string) per account
-ST_accountsDB_t accountsDataBase[255] = { {100.0,"4263982640269299"}, {1000.0,"1806356467113247787"},{500.0,"7189436959119763"},{2500,"4263982640269299"}};
+ST_accountsDB_t accountsDataBase[255] = { {100.0,"3532329577284122983"}, {1000.0,"1806356467113247787"},{500.0,"7189436959119763"},{2500,"4263982640269299"}};
 // save transactions details and date
 ST_transaction_t transDataBase[255] = { 0 };
 
@@ -94,6 +94,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t* transData)
 	}
 	if(Error == APPROVED)
 	{
+		printf("Transaction has been APPROVED\n");
 		accountsDataBase[Account_Database_Index].balance -= transData->terminalData.transAmount;
 	}
 	return Error;
