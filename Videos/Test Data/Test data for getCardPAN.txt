@@ -1,8 +1,0 @@
-
-
-501105448859782			//15	Declined	Pass
-501105448859782s		//16	Declined	Pass
-5011054488597827		//16	Accepted	Pass
-5011054488597827835		//19	Accepted	Pass
-50110544885978278358		//20	Declined	Pass
-

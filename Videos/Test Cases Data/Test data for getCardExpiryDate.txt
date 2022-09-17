@@ -1,0 +1,10 @@
+
+
+12/27	//Accepted	Pass
+0/27	//Declined	Pass
+00/27	//Declined	Pass
+13/25	//Declined	Pass
+12.23	//Declined	Pass
+12\23	//Declined	Pass
+2/20	//Declined	Pass
+02/20	//Accepted	Pass

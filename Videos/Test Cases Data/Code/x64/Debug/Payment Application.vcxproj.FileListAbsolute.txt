@@ -1,0 +1,3 @@
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\project\Payment Application\x64\Debug\Payment Application.exe
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Code\x64\Debug\Payment Application.exe
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\x64\Debug\Payment Application.exe

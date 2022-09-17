@@ -1,4 +1,0 @@
-
-
-1806356467113247787  //Valid PAN		Pass
-6325871201230219     //Invalid PAN		Pass

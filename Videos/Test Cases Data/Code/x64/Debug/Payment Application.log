@@ -1,0 +1,6 @@
+﻿  main.c
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\main.c(219,17): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\main.c(227,58): warning C4047: 'function': 'char *' differs in levels of indirection from 'uint8_t (*)[20]'
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\main.c(227,12): warning C4024: 'strcpy_s': different types for formal and actual parameter 1
+D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\main.c(228,59): warning C4133: 'function': incompatible types - from 'ST_cardData_t *' to 'ST_transaction_t *'
+  Payment Application.vcxproj -> D:\Courses\Microcontrollers\Embedded Systems\EgFWD\project\Project 1\Payment-Application\Videos\Test Data\Code\x64\Debug\Payment Application.exe

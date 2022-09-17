@@ -1,0 +1,30 @@
+
+
+1806356467113247787  //Valid PAN		Pass
+	
+	180635646711324778 checksum=7
+	// even_index*2 odd*1
+	170331686512344577 = 73  --> 80-73 = 7  = checksum
+ 
+3532329577284122983  //Valid PAN		Pass
+
+	353232957728412298 checksum=3
+	// even_index*2 odd*1
+	313434917527422497 = 77  --> 80-77 = 3  = checksum
+
+3532329577284122984  //Invalid  PAN		Pass
+
+	353232957728412298 checksum=4
+	// even_index*2 odd*1
+	313434917527422497 = 77  --> 80-77 = 3 != checksum
+
+5011054488597827835  //Valid PAN		Pass
+	501105448859782783 checksum=5 
+	// even_index*2 odd*1
+	501201488759772586 = 85  --> 90-85 = 5  = checksum
+
+6325871201230219     //Invalid PAN		Pass
+
+	632587120123021 9
+	// even_index*2 odd*1
+	334577220143022 = 45     --> 50-45 = 5 != checksum
