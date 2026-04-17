@@ -1,1 +1,0 @@
-wmic process where name='Payment Application.exe' delete
