@@ -361,12 +361,10 @@ Payment-Application/
 │   │   ├── terminal.h               # Terminal types and prototypes
 │   │   └── terminal.c               # Date, Luhn, amount logic
 │   │
-│   ├── Server/
-│   │   ├── server.h                 # Server types and prototypes
-│   │   └── server.c                 # Account DB, transaction DB, validation
-│   │
-│   └── Documents/
-│       └── project.pdf              # Project specification
+│   └── Server/
+│       ├── server.h                 # Server types and prototypes
+│       └── server.c                 # Account DB, transaction DB, validation
+│      
 │
 └── Videos/
     ├── Card Module/                 # Implementation walkthrough + test recordings
