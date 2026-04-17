@@ -19,6 +19,7 @@ A modular, console-based **SALE transaction simulator** written in C, implementi
 - [Project Structure](#project-structure)
 - [Build & Run](#build--run)
 - [User Stories](#user-stories)
+- [Demo Videos](#demo-videos)
 
 ---
 
@@ -68,7 +69,7 @@ Each module is fully decoupled — it exposes only its public API through its he
 
 ### Card Module
 
-**Files:** `Card/card.h`, `Card/card1.c`
+**Files:** `Code/Card/card.h`, `Code/Card/card1.c`
 
 Handles all cardholder input and validation.
 
@@ -104,7 +105,7 @@ typedef struct ST_cardData_t {
 
 ### Terminal Module
 
-**Files:** `Terminal/terminal.h`, `Terminal/terminal.c`
+**Files:** `Code/Terminal/terminal.h`, `Code/Terminal/terminal.c`
 
 Handles transaction date retrieval, PAN validation via Luhn algorithm, and transaction amount enforcement.
 
@@ -112,8 +113,8 @@ Handles transaction date retrieval, PAN validation via Luhn algorithm, and trans
 
 ```c
 typedef struct ST_terminalData_t {
-    float   transAmount;       // Requested transaction amount
-    float   maxTransAmount;    // Maximum allowed per transaction
+    float   transAmount;         // Requested transaction amount
+    float   maxTransAmount;      // Maximum allowed per transaction
     uint8_t transactionDate[11]; // Format: DD/MM/YYYY (auto-fetched)
 } ST_terminalData_t;
 ```
@@ -143,7 +144,7 @@ The `isValidCardPAN()` function implements the **ISO/IEC 7812 Luhn checksum** al
 
 ### Server Module
 
-**Files:** `Server/server.h`, `Server/server.c`
+**Files:** `Code/Server/server.h`, `Code/Server/server.c`
 
 Simulates a bank's back-end: account authentication, balance check, and transaction logging.
 
@@ -194,12 +195,12 @@ ST_transaction_t transDataBase[255] = { 0 };
 
 ### Application Layer
 
-**Files:** `Application/app.h`, `Application/app.c`, `main.c`
+**Files:** `Code/Application/app.h`, `Code/Application/app.c`, `Code/Payment Application.c`
 
 The application layer orchestrates the three modules and implements the **retry loop logic** — replicating the behavior of a real POS terminal that prompts again on invalid input.
 
 ```c
-// main.c — Transaction session loop
+// Entry point — Transaction session loop
 while (setMaxAmount(&transData.terminalData) == INVALID_MAX_AMOUNT);
 
 do {
@@ -212,6 +213,12 @@ do {
 ---
 
 ## Transaction Flow
+
+The diagram below shows the detailed function-level flow with all error paths:
+
+![Transaction Flow](flowchart.svg)
+
+For a high-level overview of the three modules and their decision points:
 
 ```
 START
@@ -277,7 +284,7 @@ APPROVED | DECLINED_INSUFFECIENT_FUND | DECLINED_STOLEN_CARD | INTERNAL_SERVER_E
 
 ## Test Cases
 
-All functions were tested individually before integration. Below are selected test cases:
+All functions were tested individually before integration. Below are selected test cases. Full test data is available in [`test_cases.md`](test_cases.md).
 
 ### `getCardHolderName`
 
@@ -331,33 +338,43 @@ All functions were tested individually before integration. Below are selected te
 ```
 Payment-Application/
 │
-├── main.c                          # Entry point — session loop
+├── README.md                        # Project documentation
+├── flowchart.svg                    # Detailed transaction flow diagram
+├── test_cases.md                    # Full test cases for all modules
+├── .gitignore
 │
-├── Application/
-│   ├── app.h                       # Application layer API
-│   └── app.c                       # APP_CARD, APP_TERMINAL, APP_SERVER wrappers
-│
-├── Card/
-│   ├── card.h                      # Card types and prototypes
-│   └── card1.c                     # Card input & validation implementation
-│
-├── Terminal/
-│   ├── terminal.h                  # Terminal types and prototypes
-│   └── terminal.c                  # Date, Luhn, amount logic
-│
-├── Server/
-│   ├── server.h                    # Server types and prototypes
-│   └── server.c                    # Account DB, transaction DB, validation
-│
-├── Documents/
-│   └── project.pdf                 # Project specification
+├── Code/
+│   ├── Payment Application.sln      # Visual Studio solution
+│   ├── Payment Application.vcxproj  # Project configuration
+│   ├── Payment Application.vcxproj.filters
+│   ├── Payment Application.c        # Entry point — session loop
+│   │
+│   ├── Application/
+│   │   ├── app.h                    # Application layer API
+│   │   └── app.c                    # Module orchestration wrappers
+│   │
+│   ├── Card/
+│   │   ├── card.h                   # Card types and prototypes
+│   │   └── card1.c                  # Card input & validation implementation
+│   │
+│   ├── Terminal/
+│   │   ├── terminal.h               # Terminal types and prototypes
+│   │   └── terminal.c               # Date, Luhn, amount logic
+│   │
+│   ├── Server/
+│   │   ├── server.h                 # Server types and prototypes
+│   │   └── server.c                 # Account DB, transaction DB, validation
+│   │
+│   └── Documents/
+│       └── project.pdf              # Project specification
 │
 └── Videos/
-    ├── Card Module/                # Function walkthroughs + test recordings
-    ├── Terminal Module/
-    ├── Server Module/
-    ├── Application/
-    └── Testing the Application/    # Full user story demos
+    ├── Card Module/                 # Implementation walkthrough + test recordings
+    ├── Terminal Module/             # Implementation walkthrough + test recordings
+    ├── Server Module/               # Implementation walkthrough + test recordings
+    ├── Application/                 # Application layer walkthrough
+    ├── Test Cases Data/             # Raw test input data (.txt files)
+    └── Testing the Application/     # End-to-end user story recordings
 ```
 
 ---
@@ -366,9 +383,9 @@ Payment-Application/
 
 **Requirements:** Microsoft Visual Studio (MSVC) — Windows only (uses `localtime_s`, `strcpy_s`, `scanf_s`)
 
-1. Open `Payment Application.sln` in Visual Studio.
+1. Open `Code/Payment Application.sln` in Visual Studio.
 2. Build the solution (`Ctrl+Shift+B`).
-3. Run the executable (`F5` or from `x64/Debug/`).
+3. Run the executable (`F5` or from `Code/x64/Debug/`).
 
 **At startup**, the terminal will prompt for a maximum transaction amount. Each subsequent transaction loops through all three modules automatically.
 
@@ -384,8 +401,25 @@ Six end-to-end scenarios were recorded to demonstrate correct system behavior:
 | ❌ Exceed Max Amount | `1806356467113247787` | 1000 | 500 | 700 | **DECLINED** |
 | ❌ Insufficient Fund | `1806356467113247787` | 1000 | 2000 | 1200 | **DECLINED** |
 | ❌ Expired Card | `1806356467113247787` | 1000 | 500 | 500 | **DECLINED** |
-| ❌ Fraud/Invalid Card | `123456789012345678` | 1000 | 500 | 500 | **DECLINED** |
-| ❌ Invalid Card (Luhn fail) | `5573139293755809` | 1000 | 500 | 500 | **DECLINED** |
+| ❌ Fraud / Card Not Found | `123456789012345678` | — | 500 | 500 | **DECLINED** |
+| ❌ Invalid Card (Luhn fail) | `5573139293755809` | — | 500 | 500 | **DECLINED** |
+
+---
+
+## Demo Videos
+
+The `Videos/` folder contains two types of recordings:
+
+**Implementation walkthroughs** — each function is built and explained step by step:
+
+| Module | Functions Covered |
+|---|---|
+| Card Module | `getCardHolderName`, `getCardExpiryDate`, `getCardPAN` |
+| Terminal Module | `getTransactionDate`, `isCardExpired`, `isValidCardPAN`, `getTransactionAmount`, `isBelowMaxAmount`, `setMaxAmount` |
+| Server Module | `isValidAccount`, `isAmountAvailable`, `saveTransaction`, `recieveTransactionData`, `getTransaction` |
+| Application | `APP_CARD`, `APP_TERMINAL`, `APP_SERVER`, full session loop |
+
+**Testing recordings** — each function is executed against its test cases, with actual output compared to expected results. End-to-end user story recordings are in `Videos/Testing the Application/`.
 
 ---
 
