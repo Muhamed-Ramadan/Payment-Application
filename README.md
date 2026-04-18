@@ -432,4 +432,4 @@ The `Videos/` folder contains two types of recordings:
 
 ---
 
-*Built as part of the Egypt FWD Embedded Systems Track — Payment Application Project.*
+*Built as part of the [EgFWD Embedded Systems Professional](https://egfwd.com) Nanodegree — in partnership with Udacity. [View Certificate](https://www.udacity.com/certificate/e/9b2b4c5e-f938-11ec-bfeb-efd0f66f8fa6)*
