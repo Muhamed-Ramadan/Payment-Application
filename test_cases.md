@@ -61,10 +61,13 @@ Compares card expiry `MM/YY` against the current system date `DD/MM/YYYY`.
 | # | Card Expiry | Expected | Reason | Status |
 |---|-------------|----------|--------|--------|
 | 1 | `05/20` | EXPIRED_CARD | Past year | ✅ Pass |
-| 2 | `05/25` | OK_TERMINAL | Future year | ✅ Pass |
+| 2 | `05/25` | OK_TERMINAL | Future at time of test | ✅ Pass  |
 | 3 | `11/22` | OK_TERMINAL | Future at time of test | ✅ Pass |
 | 4 | `07/22` | EXPIRED_CARD | Past month/year | ✅ Pass |
 | 5 | `05/22` | EXPIRED_CARD | Past month/year | ✅ Pass |
+
+> **Note:** Test cases 2 and 3 were valid future dates at the time of testing (2022).
+> The function correctly returned `OK_TERMINAL` as verified in the recorded test sessions.
 
 ---
 
@@ -80,11 +83,36 @@ Validates PAN using the ISO/IEC 7812 Luhn checksum.
 
 **Luhn verification example for `1806356467113247787`:**
 ```
-PAN (without check digit): 180635646711324778
-                                          ^ check digit: 7
-Even-index digits × 2:  1→2, 0→0, 5→10→1, 4→8, 7→14→5, 1→2, 3→6, 7→14→5
-Odd-index digits:        8, 6, 6, 1, 2, 4, 7, 8
-Sum = 2+8+0+6+1+6+8+4+5+1+2+3+6+2+5+4 = 73 - 80 + ... → (10 - 73%10) = 7 ✓
+PAN (including check digit): 1806356467113247787
+                                             ^ check digit: 7
+
+From right to left (excluding check digit), double every second digit:
+
+Index (from right)   Digit   Operation        Result
+----------------------------------------------------
+1                    8       8×2=16 → 7       7
+2                    7       —                7
+3                    7       7×2=14 → 5       5
+4                    4       —                4
+5                    2       2×2=4            4
+6                    3       —                3
+7                    1       1×2=2            2
+8                    1       —                1
+9                    7       7×2=14 → 5       5
+10                   6       —                6
+11                   4       4×2=8            8
+12                   6       —                6
+13                   5       5×2=10 → 1       1
+14                   3       —                3
+15                   6       6×2=12 → 3       3
+16                   0       —                0
+17                   8       8×2=16 → 7       7
+18                   1       —                1
+
+Sum of processed digits = 73
+
+Check digit calculation:
+(10 - (73 % 10)) % 10 = 7 ✓
 ```
 
 ---
